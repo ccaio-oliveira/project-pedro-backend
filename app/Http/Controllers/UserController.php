@@ -27,13 +27,5 @@ class UserController extends Controller
             return 'Dados inválidos';
         }
 
-
-        // if(isset($dados_login[0])){
-        //
-        // } else {
-        //     $dados_usuario = 'error';
-        // }
-
-        // return $dados_usuario;
     }
 }
