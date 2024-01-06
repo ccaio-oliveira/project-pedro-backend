@@ -19,13 +19,28 @@ class UserController extends Controller
         try {
             $dados_login = UserLogin::all()->where('usuario_login', '=', $usuario)->where('senha_login', '=', $senha);
 
-            $dados_usuario = User::all()->where('id', '=', $dados_login[0]->usuario_id)[0];
+            $dados_usuario = (array) json_decode(User::all()->where('id', '=', $dados_login[0]->usuario_id)[0]);
 
-            return $dados_usuario;
+            foreach($dados_usuario as $key => $value){
+                session()->put($key, $value);
+            }
+
+            $session = session()->all();
+
+            echo '<pre>';
+            print_r($session);
+
+            // return $dados_usuario;
         } catch (Exception $e){
 
-            return 'Dados inválidos';
+            throw new Exception($e);
         }
 
+    }
+
+    public function isLogged(){
+        if(session()->all() !== ''){
+            return 'authenticated';
+        }
     }
 }
