@@ -3,44 +3,41 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Http\Request;
 use App\Models\UserLogin;
 use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
     //
-    public function login(Request $request){
-        $usuario = $request->input('usuario_login');
-        $senha = $request->input('senha_login');
+    protected $user_login;
+    protected $user;
+    protected $session_controller;
 
-        $senha = md5($senha);
-
-        try {
-            $dados_login = UserLogin::all()->where('usuario_login', '=', $usuario)->where('senha_login', '=', $senha);
-
-            $dados_usuario = (array) json_decode(User::all()->where('id', '=', $dados_login[0]->usuario_id)[0]);
-
-            foreach($dados_usuario as $key => $value){
-                session()->put($key, $value);
-            }
-
-            $session = session()->all();
-
-            echo '<pre>';
-            print_r($session);
-
-            // return $dados_usuario;
-        } catch (Exception $e){
-
-            throw new Exception($e);
-        }
-
+    public function __construct()
+    {
+        $this->user_login = new UserLogin();
+        $this->user = new User();
+        $this->session_controller = new SessionController();
     }
 
-    public function isLogged(){
-        if(session()->all() !== ''){
-            return 'authenticated';
-        }
+    public function getDadosUser($id){
+        $dados_usuario = (array) json_decode($this->user::all()->where('id', '=', $id)->first());
+        return $dados_usuario;
+    }
+
+    public function isLogged(Request $request){
+        $token = Auth::user();
+        echo $token;
+        // return response()->json($request->user());
+
+        // if(count($sessao) > 0){
+        //     return $sessao;
+        // } else {
+        //     return 'not authenticated';
+        // }
     }
 }
