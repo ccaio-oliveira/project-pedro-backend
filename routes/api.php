@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\RelatorioController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -18,6 +19,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/validaSessao', [AuthController::class, 'isLogged']);
+    Route::get('/usuarios', [UserController::class, 'getUsuarios']);
+    Route::get('/relatorios', [RelatorioController::class, 'getRelatorios']);
 });
 
 Route::post('/login', [AuthController::class, 'login']);
