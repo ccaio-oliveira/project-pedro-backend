@@ -29,6 +29,13 @@ class UserController extends Controller
         return $dados_usuario;
     }
 
+    public function getUsuarios(){
+        $dados_usuarios = $this->user::all();
+
+        echo '<pre>';
+        print_r($dados_usuarios);
+    }
+
     public function isLogged(Request $request){
         $token = Auth::user();
         echo $token;
