@@ -50,9 +50,9 @@ class RelatorioController extends Controller
         foreach($relatorios as $relatorio){
             $relatorio->data_criacao = date('H:i - d/m/Y', strtotime($relatorio->data_criacao));
 
-            $relatorio->aberto_por = $this->usuario->getUsuariosPorId($relatorio->aberto_por);
+            $relatorio->aberto_por = $this->usuario->getDadosUser($relatorio->aberto_por);
             $relatorio->aberto_por = $relatorio->aberto_por->nome . ' ' . $relatorio->aberto_por->sobrenome;
-            $relatorio->atrelado_a = $this->usuario->getUsuariosPorId($relatorio->atrelado_a);
+            $relatorio->atrelado_a = $this->usuario->getDadosUser($relatorio->atrelado_a);
             $relatorio->atrelado_a = $relatorio->atrelado_a->nome . ' ' . $relatorio->atrelado_a->sobrenome;
 
             $relatorio->status = $this->status_relatorio->getStatusRelatorio($relatorio->status)->nome;

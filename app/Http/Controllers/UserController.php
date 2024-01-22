@@ -25,15 +25,14 @@ class UserController extends Controller
     }
 
     public function getDadosUser($id){
-        $dados_usuario = (array) json_decode($this->user::all()->where('id', '=', $id)->first());
+        $dados_usuario = json_decode($this->user::all()->where('id', '=', $id)->first());
         return $dados_usuario;
     }
 
     public function getUsuarios(){
         $dados_usuarios = $this->user::all();
 
-        echo '<pre>';
-        print_r($dados_usuarios);
+        return response()->json($dados_usuarios);
     }
 
     public function getUsuariosPorId($id){
