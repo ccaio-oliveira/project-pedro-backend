@@ -36,6 +36,12 @@ class UserController extends Controller
         print_r($dados_usuarios);
     }
 
+    public function getUsuariosPorId($id){
+        $dados_usuarios = $this->user::all()->where('id', '=', $id)->first();
+
+        return $dados_usuarios;
+    }
+
     public function isLogged(Request $request){
         $token = Auth::user();
         echo $token;
