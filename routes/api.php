@@ -21,6 +21,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/validaSessao', [AuthController::class, 'isLogged']);
     Route::get('/usuarios', [UserController::class, 'getUsuarios']);
     Route::get('/relatorios', [RelatorioController::class, 'getRelatorios']);
+    Route::post('/relatorios', [RelatorioController::class, 'createRelatorio']);
 });
 
 Route::post('/login', [AuthController::class, 'login']);

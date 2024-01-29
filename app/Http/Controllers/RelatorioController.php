@@ -67,4 +67,19 @@ class RelatorioController extends Controller
 
         return response()->json($relatorio);
     }
+
+    public function createRelatorio(Request $request){
+        $relatorio = new Relatorios();
+
+        $relatorio->aberto_por = $request->input('aberto_por');
+        $relatorio->atrelado_a = $request->input('atrelado_a');
+        $relatorio->grau = $request->input('grau');
+        $relatorio->status = $request->input('status');
+        $relatorio->descricao = $request->input('descricao');
+        $relatorio->data_criacao = date('Y-m-d H:i:s');
+
+        $relatorio->save();
+
+        return response()->json($relatorio);
+    }
 }
