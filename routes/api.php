@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\FileController;
 use App\Http\Controllers\RelatorioController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -22,6 +23,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/usuarios', [UserController::class, 'getUsuarios']);
     Route::get('/relatorios', [RelatorioController::class, 'getRelatorios']);
     Route::post('/relatorios', [RelatorioController::class, 'createRelatorio']);
+    Route::get('/relatorios/download/{id}', [FileController::class, 'getFileDownload']);
 });
 
 Route::post('/login', [AuthController::class, 'login']);

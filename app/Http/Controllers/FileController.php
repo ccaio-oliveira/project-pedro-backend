@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\File;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class FileController extends Controller
 {
@@ -13,6 +14,18 @@ class FileController extends Controller
     public function __construct()
     {
         $this->file = new File();
+    }
+
+    public function getFile($id){
+        $file = $this->file::find($id);
+
+        if(!$file){
+            return response()->json([
+                'message' => 'Arquivo não encontrado'
+            ], 404);
+        }
+
+        return $file;
     }
 
     public function insertFileController($file){
@@ -26,5 +39,24 @@ class FileController extends Controller
         ]);
 
         return $newFile->id;
+    }
+
+    public function getFileDownload($id){
+        $file = $this->file::find($id);
+
+        if(!$file){
+            return response()->json([
+                'message' => 'Arquivo não encontrado'
+            ], 404);
+        }
+
+        $response = new StreamedResponse(function() use ($file) {
+            echo $file->arquivo;
+        });
+
+        $response->headers->set('Content-Type', 'application/octet-stream');
+        $response->headers->set('Content-Disposition', 'attachment; filename="' . $file->nome . '"');
+
+        return $response;
     }
 }

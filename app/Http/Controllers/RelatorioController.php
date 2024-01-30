@@ -59,6 +59,13 @@ class RelatorioController extends Controller
             $relatorio->atrelado_a = $relatorio->atrelado_a->nome . ' ' . $relatorio->atrelado_a->sobrenome;
 
             $relatorio->status = $this->status_relatorio_controller->getStatusRelatorio($relatorio->status)->nome;
+
+            if($relatorio->arquivo != null){
+                $file = $this->file_controller->getFile($relatorio->arquivo);
+
+                $relatorio->arquivo = $file->nome;
+                $relatorio->arquivo_id = $file->id;
+            }
         }
 
         return response()->json($relatorios);
