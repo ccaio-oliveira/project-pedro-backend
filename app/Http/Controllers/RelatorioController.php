@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\File;
 use App\Models\Grau;
 use App\Models\Relatorios;
 use Illuminate\Http\Request;
@@ -11,14 +12,16 @@ class RelatorioController extends Controller
     protected $relatorio;
     protected $grau;
     protected $usuario;
-    protected $status_relatorio;
+    protected $status_relatorio_controller;
+    protected $file_controller;
 
     public function __construct()
     {
         $this->relatorio = new Relatorios();
         $this->grau = new Grau();
         $this->usuario = new UserController();
-        $this->status_relatorio = new StatusRelatorioController();
+        $this->status_relatorio_controller = new StatusRelatorioController();
+        $this->file_controller = new FileController();
     }
 
     public function getRelatorios(Request $request){
@@ -55,7 +58,7 @@ class RelatorioController extends Controller
             $relatorio->atrelado_a = $this->usuario->getDadosUser($relatorio->atrelado_a);
             $relatorio->atrelado_a = $relatorio->atrelado_a->nome . ' ' . $relatorio->atrelado_a->sobrenome;
 
-            $relatorio->status = $this->status_relatorio->getStatusRelatorio($relatorio->status)->nome;
+            $relatorio->status = $this->status_relatorio_controller->getStatusRelatorio($relatorio->status)->nome;
         }
 
         return response()->json($relatorios);
@@ -69,17 +72,26 @@ class RelatorioController extends Controller
     }
 
     public function createRelatorio(Request $request){
-        $relatorio = new Relatorios();
 
-        $relatorio->aberto_por = $request->input('aberto_por');
-        $relatorio->atrelado_a = $request->input('atrelado_a');
-        $relatorio->grau = $request->input('grau');
-        $relatorio->status = $request->input('status');
-        $relatorio->descricao = $request->input('descricao');
-        $relatorio->data_criacao = date('Y-m-d H:i:s');
+        $file = null;
 
-        $relatorio->save();
+        if($request->hasFile('arquivo')){
+            $file = $request->file('arquivo');
+            $file = $this->file_controller->insertFileController($file);
 
-        return response()->json($relatorio);
+        }
+
+        $this->relatorio->aberto_por = $request->input('aberto_por');
+        $this->relatorio->atrelado_a = $request->input('atrelado_a');
+        $this->relatorio->nome_paciente = $request->input('nome_paciente');
+        $this->relatorio->grau = $request->input('grau');
+        $this->relatorio->assunto = $request->input('assunto');
+        $this->relatorio->status = 1;
+        $this->relatorio->data_criacao = date('Y-m-d H:i:s');
+        $this->relatorio->arquivo = $file;
+
+        $createRelatorio = $this->relatorio->save();
+
+        return response()->json($createRelatorio);
     }
 }
