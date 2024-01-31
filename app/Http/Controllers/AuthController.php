@@ -20,10 +20,10 @@ class AuthController extends Controller
     }
     //
     public function login(Request $request){
-        $usuario = $request->input('usuario_login');
+        $usuario = $request->input('email');
         $senha = $request->input('senha_login');
 
-        if(Auth::attempt(['usuario_login' => $usuario, 'password' => $senha])){
+        if(Auth::attempt(['email' => $usuario, 'password' => $senha])){
             $token = $request->user()->createToken('invoice')->plainTextToken;
 
             $idLogin = Auth::id();
