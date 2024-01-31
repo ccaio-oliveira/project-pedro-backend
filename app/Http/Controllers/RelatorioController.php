@@ -32,9 +32,11 @@ class RelatorioController extends Controller
 
         $grau = $this->grau::all()->where('grau', '=', $grau)->first();
 
-        $relatorios = $this->relatorio::where('aberto_por', $id_usuario)
-        ->orWhere('atrelado_a', $id_usuario)
-        ->where('grau', $grau->id);
+        $relatorios = $this->relatorio::where('grau', $grau->id)
+        ->where(function($query) use ($id_usuario){
+            $query->where('aberto_por', $id_usuario)
+            ->orWhere('atrelado_a', $id_usuario);
+        });
 
         if($dataInicial != null && $dataFinal == null){
             $relatorios = $relatorios->where('data_criacao', '>=', $dataInicial);
