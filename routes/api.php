@@ -30,3 +30,5 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/loggout', [AuthController::class, 'logout']);
 
 Route::post('/forgotPassword', [AuthController::class, 'forgotPassword']);
+Route::post('/resetPassword/checkToken', [AuthController::class, 'checkToken']);
+Route::post('/resetPassword', [AuthController::class, 'resetPassword']);
