@@ -59,4 +59,21 @@ class AuthController extends Controller
         Cookie::forget('laravel_session');
         Cookie::forget('XSRF-TOKEN');
     }
+
+    public function forgotPassword(Request $request){
+        $email = $request->input('email');
+
+        $user = $this->user->where('email', $email)->first();
+
+        if($user){
+            return response()->json([
+                "message" => "Email enviado com sucesso",
+                "status" => 200
+            ]);
+        } else {
+            return response()->json([
+                "message" => "Email não encontrado",
+                "status" => 404
+            ]);}
+    }
 }
