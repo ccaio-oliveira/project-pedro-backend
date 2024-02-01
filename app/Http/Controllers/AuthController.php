@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\EmailForgotPassword;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
@@ -61,11 +64,16 @@ class AuthController extends Controller
     }
 
     public function forgotPassword(Request $request){
+        $mailer = new EmailForgotPassword(Hash::make($request->input('email')));
+
         $email = $request->input('email');
 
         $user = $this->user->where('email', $email)->first();
 
         if($user){
+
+            Mail::to($email)->send($mailer);
+
             return response()->json([
                 "message" => "Email enviado com sucesso",
                 "status" => 200
