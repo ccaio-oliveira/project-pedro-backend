@@ -16,16 +16,23 @@ class UserController extends Controller
     protected $user_login;
     protected $user;
     protected $session_controller;
+    protected $medico_crm_controller;
 
     public function __construct()
     {
         $this->user_login = new UserLogin();
         $this->user = new User();
         $this->session_controller = new SessionController();
+        $this->medico_crm_controller = new MedicoCRMController();
     }
 
     public function getDadosUser($id){
-        $dados_usuario = json_decode($this->user::all()->where('id', '=', $id)->first());
+        $dados_usuario = $this->user::all()->where('id', '=', $id)->first();
+
+        if($dados_usuario->perfil_usuario == 2){
+            $dados_usuario->medico_crm = $this->medico_crm_controller->getMedicoCRM($id);
+        }
+
         return $dados_usuario;
     }
 

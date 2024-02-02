@@ -26,7 +26,7 @@ class EmailForgotPassword extends Mailable
             view: 'emails.forgot_password',
             with: [
                 'token' => $this->token,
-                'resetUrl' => url(env('FRONTEND_URL') . '/resetPassword?token=' . $this->token)
+                'resetUrl' => url(env('FRONTEND_URL', 'http://localhost:5173') . '/resetPassword?token=' . $this->token)
             ]
         );
     }
