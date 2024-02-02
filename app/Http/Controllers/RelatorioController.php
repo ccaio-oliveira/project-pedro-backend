@@ -6,6 +6,9 @@ use App\Models\File;
 use App\Models\Grau;
 use App\Models\Relatorios;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
+use function Laravel\Prompts\table;
 
 class RelatorioController extends Controller
 {
@@ -29,14 +32,23 @@ class RelatorioController extends Controller
         $dataInicial = $request->input('dataInicial');
         $dataFinal = $request->input('dataFinal');
         $id_usuario = $request->input('id_usuario');
+        $perfil_usuario = $request->input('perfil_usuario');
 
         $grau = $this->grau::all()->where('grau', '=', $grau)->first();
 
-        $relatorios = $this->relatorio::where('grau', $grau->id)
-        ->where(function($query) use ($id_usuario){
-            $query->where('aberto_por', $id_usuario)
-            ->orWhere('atrelado_a', $id_usuario);
-        });
+        $relatorios = $this->relatorio::where('grau', $grau->id);
+
+        if($perfil_usuario != 1){
+
+            if($perfil_usuario == 3){
+                $id_usuario = DB::table('secretaria_medico')->where('secretaria_id', $id_usuario)->first()->medico_id;
+            }
+
+            $relatorios = $relatorios->where(function($query) use ($id_usuario){
+                $query->where('aberto_por', $id_usuario)
+                ->orWhere('atrelado_a', $id_usuario);
+            });
+        }
 
         if($dataInicial != null && $dataFinal == null){
             $relatorios = $relatorios->where('data_criacao', '>=', $dataInicial);
