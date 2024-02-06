@@ -32,7 +32,7 @@ class AuthController extends Controller
         $usuario = $request->input('email');
         $senha = $request->input('senha_login');
 
-        if(Auth::attempt(['email' => $usuario, 'password' => $senha])){
+        if(Auth::attempt(['email' => $usuario, 'password' => $senha], true)){
             $token = $request->user()->createToken('invoice')->plainTextToken;
 
             $idLogin = Auth::id();
