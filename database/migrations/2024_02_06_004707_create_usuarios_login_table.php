@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -22,6 +23,24 @@ return new class extends Migration
 
             $table->foreign('usuario_id')->references('id')->on('usuarios');
         });
+
+        DB::table('usuarios_login')->insert([
+            [
+                'email' => 'admin@admin.com',
+                'password' => '$2y$12$aTWoGK9VhkkcfZz9ZVXfouvCtIVtn8m3WkLo21dHu4pY9Pn8xIZl2',
+                'usuario_id' => 1,
+            ],
+            [
+                'email' => 'medico@medico.com',
+                'password' => '$2y$12$BL4l3HxJeS9KJhipketJh.LBWgeWyDUU.4DaV7.QepxTmK1Ubun0K',
+                'usuario_id' => 2,
+            ],
+            [
+                'email' => 'secretaria@secretaria.com',
+                'password' => '$2y$12$451eX3GBYeRqh.GRdqxKd.rlnqXE5kG0ixGLkX5UQg8fW51BH2lrW',
+                'usuario_id' => 3,
+            ],
+        ]);
     }
 
     /**

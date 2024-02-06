@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -25,6 +26,33 @@ return new class extends Migration
 
             $table->foreign('perfil_usuario')->references('id')->on('perfil');
         });
+
+        DB::table('usuarios')->insert([
+            [
+                'nome' => 'Admin',
+                'sobrenome' => 'Admin',
+                'nome_completo' => 'Admin Admin',
+                'email' => 'admin@admin.com',
+                'cpf' => '11111111111',
+                'perfil_usuario' => 1,
+            ],
+            [
+                'nome' => 'Medico',
+                'sobrenome' => 'Medico',
+                'nome_completo' => 'Medico Medico',
+                'email' => 'medico@medico.com',
+                'cpf' => '22222222222',
+                'perfil_usuario' => 2,
+            ],
+            [
+                'nome' => 'Secretaria',
+                'sobrenome' => 'Secretaria',
+                'nome_completo' => 'Secretaria Secretaria',
+                'email' => 'secretaria@secretaria.com',
+                'cpf' => '33333333333',
+                'perfil_usuario' => 3,
+            ],
+        ]);
     }
 
     /**
