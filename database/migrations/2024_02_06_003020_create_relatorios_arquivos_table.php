@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('nome');
             $table->longText('arquivo');
             $table->timestamps();
+
+            $table->engine = 'InnoDB';
         });
     }
 

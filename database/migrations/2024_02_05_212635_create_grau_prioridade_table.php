@@ -14,8 +14,9 @@ return new class extends Migration
     {
         Schema::create('grau_prioridade', function (Blueprint $table) {
             $table->id();
-            $table->string('grau')->unique();
-            $table->timestamps();
+            $table->string('grau');
+
+            $table->engine = 'InnoDB';
         });
 
         DB::table('grau_prioridade')->insert([

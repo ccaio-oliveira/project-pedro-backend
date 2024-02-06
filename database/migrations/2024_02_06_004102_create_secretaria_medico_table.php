@@ -14,9 +14,10 @@ return new class extends Migration
     {
         Schema::create('secretaria_medico', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('secretaria_id');
-            $table->unsignedBigInteger('medico_id');
-            $table->timestamps();
+            $table->integer('secretaria_id');
+            $table->integer('medico_id');
+
+            $table->engine = 'InnoDB';
         });
 
         DB::table('secretaria_medico')->insert([

@@ -19,12 +19,13 @@ return new class extends Migration
             $table->string('nome_completo');
             $table->string('email', 50)->unique();
             $table->string('cpf', 11)->unique();
-            $table->unsignedBigInteger('perfil_usuario');
+            $table->integer('perfil_usuario');
             $table->dateTime('data_criacao')->nullable();
             $table->integer('status')->default(0);
-            $table->timestamps();
 
             $table->foreign('perfil_usuario')->references('id')->on('perfil');
+
+            $table->engine = 'InnoDB';
         });
 
         DB::table('usuarios')->insert([

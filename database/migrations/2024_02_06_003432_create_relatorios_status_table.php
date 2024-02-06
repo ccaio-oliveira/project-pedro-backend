@@ -15,7 +15,8 @@ return new class extends Migration
         Schema::create('relatorios_status', function (Blueprint $table) {
             $table->id();
             $table->string('nome');
-            $table->timestamps();
+
+            $table->engine = 'InnoDB';
         });
 
         DB::table('relatorios_status')->insert([

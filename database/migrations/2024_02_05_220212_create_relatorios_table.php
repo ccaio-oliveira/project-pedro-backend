@@ -14,20 +14,21 @@ return new class extends Migration
         Schema::create('relatorios', function (Blueprint $table) {
             $table->id();
             $table->string('assunto');
-            $table->unsignedBigInteger('aberto_por');
-            $table->unsignedBigInteger('atrelado_a');
+            $table->integer('aberto_por');
+            $table->integer('atrelado_a');
             $table->string('nome_paciente');
-            $table->unsignedBigInteger('grau');
-            $table->unsignedBigInteger('status');
-            $table->unsignedBigInteger('arquivo')->nullable();
+            $table->integer('grau');
+            $table->integer('status');
+            $table->integer('arquivo')->nullable();
             $table->dateTime('data_criacao');
-            $table->timestamps();
 
             $table->foreign('aberto_por')->references('id')->on('usuarios');
             $table->foreign('atrelado_a')->references('id')->on('usuarios');
             $table->foreign('grau')->references('id')->on('grau_prioridade');
             $table->foreign('status')->references('id')->on('relatorios_status');
             $table->foreign('arquivo')->references('id')->on('relatorios_arquivos');
+
+            $table->engine = 'InnoDB';
         });
     }
 

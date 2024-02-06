@@ -16,12 +16,14 @@ return new class extends Migration
             $table->id();
             $table->string('email')->unique();
             $table->string('password');
-            $table->unsignedBigInteger('usuario_id');
+            $table->integer('usuario_id');
             $table->dateTime('ultimo_acesso')->nullable();
             $table->rememberToken();
-            $table->timestamps();
+            $table->dateTime('updated_at')->nullable();
 
             $table->foreign('usuario_id')->references('id')->on('usuarios');
+
+            $table->engine = 'InnoDB';
         });
 
         DB::table('usuarios_login')->insert([

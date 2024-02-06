@@ -14,8 +14,9 @@ return new class extends Migration
     {
         Schema::create('perfil', function (Blueprint $table) {
             $table->id();
-            $table->string('nome')->unique();
-            $table->timestamps();
+            $table->string('nome');
+
+            $table->engine = 'InnoDB';
         });
 
         DB::table('perfil')->insert([
