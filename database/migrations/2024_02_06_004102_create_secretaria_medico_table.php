@@ -13,9 +13,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('secretaria_medico', function (Blueprint $table) {
-            $table->id();
+            $table->integer('id', true);
             $table->integer('secretaria_id');
             $table->integer('medico_id');
+
+            $table->foreign('secretaria_id')->references('id')->on('usuarios');
+            $table->foreign('medico_id')->references('id')->on('usuarios');
 
             $table->engine = 'InnoDB';
         });

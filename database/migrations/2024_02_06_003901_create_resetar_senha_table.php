@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('resetar_senha', function (Blueprint $table) {
-            $table->id();
+            $table->integer('id', true);
             $table->string('email', 50);
             $table->string('token');
             $table->timestamps();

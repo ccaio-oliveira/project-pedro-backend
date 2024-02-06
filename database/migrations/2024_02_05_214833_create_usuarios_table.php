@@ -13,7 +13,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('usuarios', function (Blueprint $table) {
-            $table->id();
+            $table->integer('id', true);
             $table->string('nome');
             $table->string('sobrenome');
             $table->string('nome_completo');
@@ -36,6 +36,7 @@ return new class extends Migration
                 'email' => 'admin@admin.com',
                 'cpf' => '11111111111',
                 'perfil_usuario' => 1,
+                'status' => 1,
             ],
             [
                 'nome' => 'Medico',
@@ -44,6 +45,7 @@ return new class extends Migration
                 'email' => 'medico@medico.com',
                 'cpf' => '22222222222',
                 'perfil_usuario' => 2,
+                'status' => 1,
             ],
             [
                 'nome' => 'Secretaria',
@@ -52,6 +54,7 @@ return new class extends Migration
                 'email' => 'secretaria@secretaria.com',
                 'cpf' => '33333333333',
                 'perfil_usuario' => 3,
+                'status' => 1,
             ],
         ]);
     }
