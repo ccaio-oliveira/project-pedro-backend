@@ -105,6 +105,7 @@ class RelatorioController extends Controller
         $this->relatorio->aberto_por = $request->input('aberto_por');
         $this->relatorio->atrelado_a = $request->input('atrelado_a');
         $this->relatorio->nome_paciente = $request->input('nome_paciente');
+        $this->relatorio->data_nascimento_paciente = $request->input('data_nascimento');
         $this->relatorio->grau = $request->input('grau');
         $this->relatorio->assunto = $request->input('assunto');
         $this->relatorio->status = 1;

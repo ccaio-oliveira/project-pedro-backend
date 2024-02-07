@@ -17,6 +17,7 @@ return new class extends Migration
             $table->integer('aberto_por');
             $table->integer('atrelado_a');
             $table->string('nome_paciente');
+            $table->dateTime('data_nascimento_paciente');
             $table->integer('grau');
             $table->integer('status');
             $table->integer('arquivo')->nullable();
