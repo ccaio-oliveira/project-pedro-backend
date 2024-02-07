@@ -24,6 +24,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/relatorios', [RelatorioController::class, 'getRelatorios']);
     Route::post('/relatorios', [RelatorioController::class, 'createRelatorio']);
     Route::get('/relatorios/download/{id}', [FileController::class, 'getFileDownload']);
+    Route::get('/relatorios/{relatorio_id}/{atrelado_a}', [RelatorioController::class, 'changeViewed']);
 });
 
 Route::post('/login', [AuthController::class, 'login']);

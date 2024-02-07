@@ -116,4 +116,18 @@ class RelatorioController extends Controller
 
         return response()->json($createRelatorio);
     }
+
+    public function changeViewed($relatorio_id, $atrelado_a){
+        $relatorio = $this->relatorio::all()->where('id', '=', $relatorio_id)->first();
+
+        if($relatorio->atrelado_a == $atrelado_a){
+            $relatorio->status = 2;
+
+            $updateRelatorio = $relatorio->save();
+
+            return response()->json($updateRelatorio);
+        } else {
+            return response()->json(false);
+        }
+    }
 }
