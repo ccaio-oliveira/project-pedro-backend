@@ -71,8 +71,15 @@ class FileController extends Controller
         $dataFim = $request->input('dataFim');
         $status = $request->input('status');
 
-        $relatorios = $this->relatorios::where('grau', $grau)
-        ->whereBetween('data_criacao', [$dataInicio, $dataFim]);
+        $relatorios = $this->relatorios::where('grau', $grau);
+
+        if($dataInicio != null && $dataFim != null){
+            $relatorios->whereBetween('data_criacao', [$dataInicio, $dataFim]);
+        }else if($dataInicio != null){
+            $relatorios->where('data_criacao', '>=', $dataInicio);
+        }else if($dataFim != null){
+            $relatorios->where('data_criacao', '<=', $dataFim);
+        }
 
         if($status != 0){
             $relatorios = $relatorios->where('status', $status);
