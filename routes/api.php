@@ -26,6 +26,7 @@ Route::group(['middleware' => 'cors'], function () {
         Route::post('/relatorios', [RelatorioController::class, 'createRelatorio']);
         Route::get('/relatorios/download/{id}', [FileController::class, 'getFileDownload']);
         Route::get('/relatorios/{relatorio_id}/{atrelado_a}', [RelatorioController::class, 'changeViewed']);
+        Route::get('/relatorios/exportar', [FileController::class, 'exportarRelatorios']);
     });
 
     Route::post('/login', [AuthController::class, 'login']);
