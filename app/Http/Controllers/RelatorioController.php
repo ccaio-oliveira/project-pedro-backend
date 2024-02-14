@@ -17,6 +17,7 @@ class RelatorioController extends Controller
     protected $usuario;
     protected $status_relatorio_controller;
     protected $file_controller;
+    protected $secretaria_controller;
 
     public function __construct()
     {
@@ -25,6 +26,7 @@ class RelatorioController extends Controller
         $this->usuario = new UserController();
         $this->status_relatorio_controller = new StatusRelatorioController();
         $this->file_controller = new FileController();
+        $this->secretaria_controller = new SecretariaController();
     }
 
     public function getRelatorios(Request $request){
@@ -41,7 +43,11 @@ class RelatorioController extends Controller
         if($perfil_usuario != 1){
 
             if($perfil_usuario == 3){
-                $id_usuario = DB::table('secretaria_medico')->where('secretaria_id', $id_usuario)->first()->medico_id;
+                $id_medico = $this->secretaria_controller->getMedicoRelacionado($id_usuario);
+
+                if(!empty($id_medico)){
+                    $id_usuario = $id_medico->medico_id;
+                }
             }
 
             $relatorios = $relatorios->where(function($query) use ($id_usuario){
@@ -65,6 +71,9 @@ class RelatorioController extends Controller
         $relatorios = $relatorios->get();
 
         foreach($relatorios as $relatorio){
+            $relatorio->telefone_whats = $this->usuario->getUserTelefone($relatorio->atrelado_a, 'whatsapp');
+            $relatorio->telefone_cel = $this->usuario->getUserTelefone($relatorio->atrelado_a, 'celular');
+
             $relatorio->data_criacao = date('H:i - d/m/Y', strtotime($relatorio->data_criacao));
 
             $relatorio->aberto_por = $this->usuario->getDadosUser($relatorio->aberto_por);
