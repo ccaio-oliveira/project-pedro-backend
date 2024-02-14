@@ -8,6 +8,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -48,15 +49,39 @@ class UserController extends Controller
         return $dados_usuarios;
     }
 
-    public function isLogged(Request $request){
-        $token = Auth::user();
-        echo $token;
-        // return response()->json($request->user());
+    public function getUsersByType(Request $request){
+        $tipo_usuario = $request->input('tipoUsuario');
+        $perfil_usuario = $request->input('perfil_usuario');
 
-        // if(count($sessao) > 0){
-        //     return $sessao;
-        // } else {
-        //     return 'not authenticated';
-        // }
+        if($perfil_usuario == 1){
+            $dados_usuarios = $this->user::all()->where('perfil_usuario', '=', $tipo_usuario);
+
+            if($tipo_usuario == 2){
+                foreach($dados_usuarios as $usuario){
+                    $usuario->medico_crm = $this->medico_crm_controller->getMedicoCRM($usuario->id);
+                }
+            }
+
+            // foreach($dados_usuarios as $usuario){
+            //     $usuario->telefone = $this
+            // }
+
+            return response()->json($dados_usuarios);
+        }
+
+        if($perfil_usuario == 2){
+
+            if($tipo_usuario == 2){
+                $dados_usuarios = $this->user::all()->where('perfil_usuario', '=', $tipo_usuario);
+
+                return response()->json($dados_usuarios);
+            }
+        }
+
+        if($perfil_usuario == 3){
+            $id_secretaria = DB::table('secretaria_medico')->where('medico_id', $tipo_usuario)->get();
+
+            return response()->json($id_secretaria);
+        }
     }
 }
