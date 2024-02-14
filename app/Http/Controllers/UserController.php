@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Symfony\Component\VarDumper\VarDumper;
 
 class UserController extends Controller
 {
@@ -18,6 +19,9 @@ class UserController extends Controller
     protected $user;
     protected $session_controller;
     protected $medico_crm_controller;
+    protected $secretaria_controller;
+    protected $telefone_controller;
+    protected $medico_funcao_controller;
 
     public function __construct()
     {
@@ -25,6 +29,9 @@ class UserController extends Controller
         $this->user = new User();
         $this->session_controller = new SessionController();
         $this->medico_crm_controller = new MedicoCRMController();
+        $this->secretaria_controller = new SecretariaController();
+        $this->telefone_controller = new TelefoneController();
+        $this->medico_funcao_controller = new MedicoFuncaoController();
     }
 
     public function getDadosUser($id){
@@ -51,37 +58,29 @@ class UserController extends Controller
 
     public function getUsersByType(Request $request){
         $tipo_usuario = $request->input('tipoUsuario');
-        $perfil_usuario = $request->input('perfil_usuario');
 
-        if($perfil_usuario == 1){
-            $dados_usuarios = $this->user::all()->where('perfil_usuario', '=', $tipo_usuario);
+        $dados_usuarios = $this->user->where('perfil_usuario', '=', $tipo_usuario)->get();
 
-            if($tipo_usuario == 2){
-                foreach($dados_usuarios as $usuario){
-                    $usuario->medico_crm = $this->medico_crm_controller->getMedicoCRM($usuario->id);
-                }
-            }
-
-            // foreach($dados_usuarios as $usuario){
-            //     $usuario->telefone = $this
-            // }
-
-            return response()->json($dados_usuarios);
-        }
-
-        if($perfil_usuario == 2){
-
-            if($tipo_usuario == 2){
-                $dados_usuarios = $this->user::all()->where('perfil_usuario', '=', $tipo_usuario);
-
-                return response()->json($dados_usuarios);
+        // se o usuário for médico, buscar o CRM
+        if($tipo_usuario == 2){
+            foreach($dados_usuarios as $usuario){
+                $usuario->medico_crm = $this->medico_crm_controller->getMedicoCRM($usuario->id)->crm;
+                $usuario->funcao = $this->medico_funcao_controller->getMedicoFuncao($usuario->id)->funcao;
             }
         }
 
-        if($perfil_usuario == 3){
-            $id_secretaria = DB::table('secretaria_medico')->where('medico_id', $tipo_usuario)->get();
-
-            return response()->json($id_secretaria);
+        // buscar os telefones dos usuários
+        foreach($dados_usuarios as $usuario){
+            $usuario->telefone_whats = $this->getUserTelefone($usuario->id, 'whatsapp')->telefone;
+            $usuario->telefone_cel = $this->getUserTelefone($usuario->id, 'celular')->telefone;
         }
+
+        return response()->json($dados_usuarios);
+    }
+
+    public function getUserTelefone($id, $tipo){
+        $telefone = $this->telefone_controller->getTelefone($id, $tipo);
+
+        return $telefone;
     }
 }
