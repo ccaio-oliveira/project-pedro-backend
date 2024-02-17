@@ -15,7 +15,7 @@ class MedicoFuncaoController extends Controller
     }
 
     public function getMedicoFuncao($id){
-        $medico_funcao = $this->medico_funcao::all()->where('medico_id', '=', $id)->first();
+        $medico_funcao = $this->medico_funcao::all()->where('id', '=', $id)->first();
 
         return $medico_funcao;
     }
