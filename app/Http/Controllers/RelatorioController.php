@@ -35,10 +35,15 @@ class RelatorioController extends Controller
         $dataFinal = $request->input('dataFinal');
         $id_usuario = $request->input('id_usuario');
         $perfil_usuario = $request->input('perfil_usuario');
+        $pagina = $request->input('page');
 
         $grau = $this->grau::all()->where('grau', '=', $grau)->first();
 
-        $relatorios = $this->relatorio::where('grau', $grau->id);
+        if($pagina == 'perfil'){
+            $relatorios = $this->relatorio::where('status', 1);
+        } else {
+            $relatorios = $this->relatorio::where('grau', $grau->id);
+        }
 
         if($perfil_usuario != 1){
 
