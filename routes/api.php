@@ -22,8 +22,10 @@ Route::group(['middleware' => 'cors'], function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('/validaSessao', [AuthController::class, 'isLogged']);
         Route::get('/usuarios', [UserController::class, 'getUsuarios']);
+        Route::get('/usuarioPerfil', [UserController::class, 'getUsuarioPerfil']);
         Route::get('/relatorios', [RelatorioController::class, 'getRelatorios']);
         Route::post('/relatorios', [RelatorioController::class, 'createRelatorio']);
+        Route::get('/relatorios/usuario', [RelatorioController::class, 'getRelatoriosByUser']);
         Route::get('/relatorios/download/{id}', [FileController::class, 'getFileDownload']);
         Route::get('/relatorios/{relatorio_id}/{atrelado_a}', [RelatorioController::class, 'changeViewed']);
         Route::get('/relatorios/exportar', [FileController::class, 'exportarRelatorios']);

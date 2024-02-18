@@ -22,6 +22,7 @@ class UserController extends Controller
     protected $secretaria_controller;
     protected $telefone_controller;
     protected $medico_funcao_controller;
+    protected $foto_perfil_controller;
 
     public function __construct()
     {
@@ -32,6 +33,7 @@ class UserController extends Controller
         $this->secretaria_controller = new SecretariaController();
         $this->telefone_controller = new TelefoneController();
         $this->medico_funcao_controller = new MedicoFuncaoController();
+        $this->foto_perfil_controller = new FotoPerfilController();
     }
 
     public function getDadosUser($id){
@@ -82,5 +84,22 @@ class UserController extends Controller
         $telefone = $this->telefone_controller->getTelefone($id, $tipo);
 
         return $telefone;
+    }
+
+    public function getUsuarioPerfil(Request $request){
+        $id = $request->input('usuario_id');
+
+        $dados_usuario = $this->user::all()->where('id', '=', $id)->first();
+
+        if($dados_usuario->perfil_usuario == 2){
+            $dados_usuario->medico_crm = $this->medico_crm_controller->getMedicoCRM($id)->crm;
+            $dados_usuario->especialidade = $this->medico_funcao_controller->getMedicoFuncao($dados_usuario->especialidade)->funcao;
+        }
+
+        if($dados_usuario->foto_id != 0){
+            $dados_usuario->foto = $this->foto_perfil_controller->getFotoPerfil($dados_usuario->foto_id);
+        }
+
+        return response()->json($dados_usuario);
     }
 }

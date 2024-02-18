@@ -35,15 +35,10 @@ class RelatorioController extends Controller
         $dataFinal = $request->input('dataFinal');
         $id_usuario = $request->input('id_usuario');
         $perfil_usuario = $request->input('perfil_usuario');
-        $pagina = $request->input('page');
 
         $grau = $this->grau::all()->where('grau', '=', $grau)->first();
 
-        if($pagina == 'perfil'){
-            $relatorios = $this->relatorio::where('status', 1);
-        } else {
-            $relatorios = $this->relatorio::where('grau', $grau->id);
-        }
+        $relatorios = $this->relatorio::where('grau', $grau->id);
 
         if($perfil_usuario != 1){
 
@@ -104,6 +99,82 @@ class RelatorioController extends Controller
         $relatorio = $this->relatorio::all()->where('id', '=', $id)->first();
 
         return response()->json($relatorio);
+    }
+
+    public function getRelatoriosByUser(Request $request){
+        $dataInicial = $request->input('dataInicial');
+        $dataFinal = $request->input('dataFinal');
+        $id_usuario = $request->input('id_usuario');
+        $perfil_usuario = $request->input('perfil_usuario');
+
+        if($perfil_usuario == 1){
+            $relatorios = $this->relatorio;
+
+            if($dataInicial != null && $dataFinal == null){
+                $relatorios = $relatorios->where('data_criacao', '>=', $dataInicial);
+            }
+
+            if($dataFinal != null && $dataInicial == null){
+                $relatorios = $relatorios->where('data_criacao', '<=', $dataFinal);
+            }
+
+            if($dataInicial != null && $dataFinal != null){
+                $relatorios = $relatorios->whereBetween('data_criacao', [$dataInicial, $dataFinal]);
+            }
+
+            $relatorios = $relatorios->orderBy('status', 'asc');
+        } else {
+
+            if($perfil_usuario == 3){
+                $id_medico = $this->secretaria_controller->getMedicoRelacionado($id_usuario);
+
+                if(!empty($id_medico)){
+                    $id_usuario = $id_medico->medico_id;
+                }
+            }
+
+            $relatorios = $this->relatorio::where(function($query) use ($id_usuario){
+                $query->where('aberto_por', $id_usuario)
+                ->orWhere('atrelado_a', $id_usuario);
+            });
+
+            if($dataInicial != null && $dataFinal == null){
+                $relatorios = $relatorios->where('data_criacao', '>=', $dataInicial);
+            }
+
+            if($dataFinal != null && $dataInicial == null){
+                $relatorios = $relatorios->where('data_criacao', '<=', $dataFinal);
+            }
+
+            if($dataInicial != null && $dataFinal != null){
+                $relatorios = $relatorios->whereBetween('data_criacao', [$dataInicial, $dataFinal]);
+            }
+        }
+
+        $relatorios = $relatorios->get();
+
+        foreach($relatorios as $relatorio){
+            $relatorio->telefone_whats = $this->usuario->getUserTelefone($relatorio->atrelado_a, 'whatsapp');
+            $relatorio->telefone_cel = $this->usuario->getUserTelefone($relatorio->atrelado_a, 'celular');
+
+            $relatorio->data_criacao = date('H:i - d/m/Y', strtotime($relatorio->data_criacao));
+
+            $relatorio->aberto_por = $this->usuario->getDadosUser($relatorio->aberto_por);
+            $relatorio->aberto_por = $relatorio->aberto_por->nome . ' ' . $relatorio->aberto_por->sobrenome;
+            $relatorio->atrelado_a = $this->usuario->getDadosUser($relatorio->atrelado_a);
+            $relatorio->atrelado_a = $relatorio->atrelado_a->nome . ' ' . $relatorio->atrelado_a->sobrenome;
+
+            $relatorio->status = $this->status_relatorio_controller->getStatusRelatorio($relatorio->status)->nome;
+
+            if($relatorio->arquivo != null){
+                $file = $this->file_controller->getFile($relatorio->arquivo);
+
+                $relatorio->arquivo = $file->nome;
+                $relatorio->arquivo_id = $file->id;
+            }
+        }
+
+        return response()->json($relatorios);
     }
 
     public function createRelatorio(Request $request){
