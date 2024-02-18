@@ -97,7 +97,7 @@ class UserController extends Controller
         }
 
         if($dados_usuario->foto_id != 0){
-            $dados_usuario->foto = $this->foto_perfil_controller->getFotoPerfil($dados_usuario->foto_id);
+            $dados_usuario->foto_id = $this->foto_perfil_controller->getFotoPerfil($dados_usuario->foto_id);
         }
 
         return response()->json($dados_usuario);
