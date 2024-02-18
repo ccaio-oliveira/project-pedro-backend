@@ -15,7 +15,7 @@ class SecretariaController extends Controller
     }
 
     public function getMedicoRelacionado($secretaria_id){
-        $medico = $this->secretaria::all()->where('secretaria_id', '=', $secretaria_id);
+        $medico = $this->secretaria::all()->where('secretaria_id', '=', $secretaria_id)->first();
 
         return $medico;
     }
