@@ -127,4 +127,17 @@ class UserController extends Controller
 
         return response()->json(['message' => 'Email alterado com sucesso!', 'status' => 200]);
     }
+
+    public function changeNumero(Request $request){
+        $id = $request->input('usuario_id');
+        $novo_numero = $request->input('telefone');
+        $tipo = $request->input('tipo');
+
+        $telefone = $this->telefone_controller->getTelefone($id, $tipo);
+
+        $telefone->telefone = $novo_numero;
+        $telefone->save();
+
+        return response()->json(['message' => 'Número alterado com sucesso!', 'status' => 200]);
+    }
 }

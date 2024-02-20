@@ -25,6 +25,7 @@ Route::group(['middleware' => 'cors'], function () {
         Route::get('/usuarios', [UserController::class, 'getUsuarios']);
         Route::get('/usuarioPerfil', [UserController::class, 'getUsuarioPerfil']);
         Route::post('/usuarios/changeEmail', [UserController::class, 'changeEmail']);
+        Route::put('/usuarios/changeNumero', [UserController::class, 'changeNumero']);
 
         Route::get('/relatorios', [RelatorioController::class, 'getRelatorios']);
         Route::post('/relatorios', [RelatorioController::class, 'createRelatorio']);
