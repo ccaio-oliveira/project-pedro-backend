@@ -18,4 +18,6 @@ class User extends Model
      * @var array<int, string>
      */
     protected $table = 'usuarios';
+
+    public $timestamps = false;
 }

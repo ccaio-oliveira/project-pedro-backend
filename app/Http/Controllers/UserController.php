@@ -100,6 +100,31 @@ class UserController extends Controller
             $dados_usuario->foto_id = $this->foto_perfil_controller->getFotoPerfil($dados_usuario->foto_id);
         }
 
+        $dados_usuario->telefone_whats = $this->getUserTelefone($id, 'whatsapp')->telefone;
+        $dados_usuario->telefone_cel = $this->getUserTelefone($id, 'celular')->telefone;
+
         return response()->json($dados_usuario);
+    }
+
+    public function changeEmail(Request $request){
+        $email_antigo = $request->input('email');
+        $novo_email = $request->input('newEmail');
+
+        $user = $this->user->where('email', '=', $email_antigo)->first();
+        $user_login = $this->user_login->where('email', '=', $email_antigo)->first();
+
+        $check_email = $this->user->where('email', '=', $novo_email)->first();
+
+        if($check_email){
+            return response()->json(['message' => 'Email já cadastrado', 'status' => 400]);
+        }
+
+        $user->email = $novo_email;
+        $user_login->email = $novo_email;
+
+        $user->save();
+        $user_login->save();
+
+        return response()->json(['message' => 'Email alterado com sucesso!', 'status' => 200]);
     }
 }
