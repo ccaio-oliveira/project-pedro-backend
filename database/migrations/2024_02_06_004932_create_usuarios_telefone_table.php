@@ -15,6 +15,7 @@ return new class extends Migration
             $table->integer('id', true);
             $table->integer('usuario_id');
             $table->string('telefone', 50);
+            $table->timestamps();
 
             $table->foreign('usuario_id')->references('id')->on('usuarios');
 
