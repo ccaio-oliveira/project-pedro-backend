@@ -140,4 +140,17 @@ class UserController extends Controller
 
         return response()->json(['message' => 'Número alterado com sucesso!', 'status' => 200]);
     }
+
+    public function changeUsername(Request $request){
+        $id = $request->input('usuario_id');
+        $novo_nome = $request->input('nome_completo');
+
+        $user = $this->user->where('id', '=', $id)->first();
+
+        $user->nome_completo = $novo_nome;
+
+        $user->save();
+
+        return response()->json(['message' => 'Nome alterado com sucesso!', 'status' => 200]);
+    }
 }
