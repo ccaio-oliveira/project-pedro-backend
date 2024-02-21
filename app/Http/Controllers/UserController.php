@@ -153,4 +153,30 @@ class UserController extends Controller
 
         return response()->json(['message' => 'Nome alterado com sucesso!', 'status' => 200]);
     }
+
+    public function validateCurrentPassword(Request $request){
+        $id = $request->input('user_id');
+        $password = $request->input('password');
+
+        $user_login = $this->user_login->where('usuario_id', '=', $id)->first();
+
+        if(Hash::check($password, $user_login->password)){
+            return response()->json(['message' => 'Senha válida', 'status' => 200]);
+        } else {
+            return response()->json(['message' => 'Senha inválida', 'status' => 400]);
+        }
+    }
+
+    public function changePassword(Request $request){
+        $id = $request->input('user_id');
+        $new_password = $request->input('new_password');
+
+        $user_login = $this->user_login->where('usuario_id', '=', $id)->first();
+
+        $user_login->password = Hash::make($new_password);
+
+        $user_login->save();
+
+        return response()->json(['message' => 'Senha alterada com sucesso!', 'status' => 200]);
+    }
 }
