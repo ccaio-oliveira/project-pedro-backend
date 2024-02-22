@@ -14,7 +14,10 @@ return new class extends Migration
         Schema::create('usuarios_foto_perfil', function (Blueprint $table) {
             $table->integer('id', true);
             $table->binary('foto');
+            $table->integer('usuario_id');
             $table->timestamps();
+
+            $table->foreign('usuario_id')->references('id')->on('usuarios');
 
             $table->engine = 'InnoDB';
         });
