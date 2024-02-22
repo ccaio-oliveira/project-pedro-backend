@@ -19,4 +19,13 @@ class FotoPerfilController extends Controller
 
         return $foto;
     }
+
+    public function createFotoPerfil($user_id, $file){
+        $this->foto_perfil->usuario_id = $user_id;
+        $this->foto_perfil->foto = $file;
+
+        $image = $this->foto_perfil->save();
+
+        return $this->foto_perfil;
+    }
 }

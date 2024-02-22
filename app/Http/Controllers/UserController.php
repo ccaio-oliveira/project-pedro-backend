@@ -179,4 +179,24 @@ class UserController extends Controller
 
         return response()->json(['message' => 'Senha alterada com sucesso!', 'status' => 200]);
     }
+
+    public function uploadProfile(Request $request){
+        $id = $request->input('user_id');
+        $file = $request->file('file');
+
+        $user = $this->user->where('id', '=', $id)->first();
+
+        if($user->foto_id != 0){
+            $profile_pic = $this->foto_perfil_controller->getFotoPerfil($user->foto_id);
+            $profile_pic->delete();
+        }
+
+        $profile_pic = $this->foto_perfil_controller->createFotoPerfil($user->id, $file);
+
+        $user->foto_id = $profile_pic->id;
+
+        $user->save();
+
+        return response()->json(['message' => 'Foto de perfil alterada com sucesso!', 'status' => 200]);
+    }
 }
