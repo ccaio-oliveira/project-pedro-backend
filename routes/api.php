@@ -30,6 +30,7 @@ Route::group(['middleware' => 'cors'], function () {
         Route::post('/users/validateCurrentPassword', [UserController::class, 'validateCurrentPassword']);
         Route::post('/users/changePassword', [UserController::class, 'changePassword']);
         Route::post('/users/uploadProfile',  [UserController::class, 'uploadProfile']);
+        Route::put('/users/nickname', [UserController::class, 'changeNickname']);
 
         Route::get('/relatorios', [RelatorioController::class, 'getRelatorios']);
         Route::post('/relatorios', [RelatorioController::class, 'createRelatorio']);

@@ -208,4 +208,17 @@ class UserController extends Controller
 
         return response()->json(['message' => 'Foto de perfil alterada com sucesso!', 'status' => 200]);
     }
+
+    public function changeNickname(Request $request){
+        $id = $request->input('user_id');
+        $nickname = $request->input('nickname');
+
+        $user = $this->user->where('id', '=', $id)->first();
+
+        $user->apelido = $nickname;
+
+        $user->save();
+
+        return response()->json(['message' => 'Apelido alterado com sucesso!', 'status' => 200]);
+    }
 }
