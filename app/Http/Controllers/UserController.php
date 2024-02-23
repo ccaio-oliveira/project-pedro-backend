@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\VarDumper\VarDumper;
 
 class UserController extends Controller
@@ -98,6 +99,7 @@ class UserController extends Controller
 
         if($dados_usuario->foto_id != 0){
             $dados_usuario->foto_id = $this->foto_perfil_controller->getFotoPerfil($dados_usuario->foto_id);
+            $dados_usuario->foto_id->foto = asset('storage/' . $dados_usuario->foto_id->foto);
         }
 
         $dados_usuario->telefone_whats = $this->getUserTelefone($id, 'whatsapp')->telefone;
@@ -180,18 +182,25 @@ class UserController extends Controller
         return response()->json(['message' => 'Senha alterada com sucesso!', 'status' => 200]);
     }
 
+
     public function uploadProfile(Request $request){
         $id = $request->input('user_id');
         $file = $request->file('file');
 
         $user = $this->user->where('id', '=', $id)->first();
 
+        $path = $file->store('images', 'public');
+
         if($user->foto_id != 0){
             $profile_pic = $this->foto_perfil_controller->getFotoPerfil($user->foto_id);
-            $profile_pic->delete();
-        }
 
-        $profile_pic = $this->foto_perfil_controller->createFotoPerfil($user->id, $file);
+            Storage::delete('public/' . $profile_pic->foto);
+
+            $profile_pic->foto = $path;
+            $profile_pic->save();
+        } else {
+            $profile_pic = $this->foto_perfil_controller->createFotoPerfil($user->id, $path);
+        }
 
         $user->foto_id = $profile_pic->id;
 
