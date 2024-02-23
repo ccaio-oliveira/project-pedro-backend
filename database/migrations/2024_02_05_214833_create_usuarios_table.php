@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('nome');
             $table->string('sobrenome');
             $table->string('nome_completo');
-            $table->integer('foto_perfil')->default(0);
+            $table->string('apelido')->nullable();
+            $table->integer('foto_id')->default(0);
             $table->string('email', 50)->unique();
             $table->string('cpf', 11)->unique();
             $table->integer('perfil_usuario');
