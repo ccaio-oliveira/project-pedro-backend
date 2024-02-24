@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\EmailUserCreated;
 use App\Models\User;
 use App\Models\UserLogin;
 use Exception;
@@ -10,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\VarDumper\VarDumper;
 
@@ -37,11 +39,11 @@ class UserController extends Controller
         $this->foto_perfil_controller = new FotoPerfilController();
     }
 
-    public function getDadosUser($id){
-        $dados_usuario = $this->user::all()->where('id', '=', $id)->first();
+    public function getDadosUser($email){
+        $dados_usuario = $this->user::all()->where('email', '=', $email)->first();
 
         if($dados_usuario->perfil_usuario == 2){
-            $dados_usuario->medico_crm = $this->medico_crm_controller->getMedicoCRM($id);
+            $dados_usuario->medico_crm = $this->medico_crm_controller->getMedicoCRM($dados_usuario->id);
         }
 
         return $dados_usuario;
@@ -220,5 +222,42 @@ class UserController extends Controller
         $user->save();
 
         return response()->json(['message' => 'Apelido alterado com sucesso!', 'status' => 200]);
+    }
+
+    public function registerDoctor(Request $request){
+        $full_name = $request->input('fullName');
+        $email = $request->input('email');
+        $password = $request->input('password');
+        $crm = $request->input('crm');
+        $specialty = $request->input('specialty');
+        $whatsapp_number = $request->input('whatsappNumber');
+        $phone_number = $request->input('phoneNumber');
+        $workplace = $request->input('workplace');
+        $nickname = $request->input('nickname');
+
+        $hashPassword = Hash::make($password);
+
+        $this->user->nome_completo = $full_name;
+        $this->user->apelido = $nickname;
+        $this->user->especialidade = $specialty;
+        $this->user->email = $email;
+        $this->user->instituicao = $workplace;
+        $this->user->perfil_usuario = 2;
+        $this->user->status = 1;
+        $this->user->save();
+
+        $this->user_login->email = $email;
+        $this->user_login->password = $hashPassword;
+        $this->user_login->usuario_id = $this->user->id;
+        $this->user_login->save();
+
+        $this->medico_crm_controller->createDoctorCRM($this->user->id, $crm);
+        $this->telefone_controller->createPhone($this->user->id, $whatsapp_number, 'whatsapp');
+        $this->telefone_controller->createPhone($this->user->id, $phone_number, 'celular');
+
+        $mailer = new EmailUserCreated($full_name, $email, $password);
+        Mail::to($email)->send($mailer);
+
+        return response()->json(['message' => 'Dados de médico registrados com sucesso!', 'status' => 200]);
     }
 }

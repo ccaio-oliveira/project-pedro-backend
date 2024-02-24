@@ -19,4 +19,10 @@ class MedicoCRMController extends Controller
         $medico_crm = $this->medico_crm::all()->where('usuario_id', '=', $id)->first();
         return $medico_crm;
     }
+
+    public function createDoctorCRM($user_id, $crm){
+        $this->medico_crm->usuario_id = $user_id;
+        $this->medico_crm->crm = $crm;
+        $this->medico_crm->save();
+    }
 }

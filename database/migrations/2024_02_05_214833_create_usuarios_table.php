@@ -14,49 +14,43 @@ return new class extends Migration
     {
         Schema::create('usuarios', function (Blueprint $table) {
             $table->integer('id', true);
-            $table->string('nome');
-            $table->string('sobrenome');
             $table->string('nome_completo');
             $table->string('apelido')->nullable();
             $table->integer('foto_id')->default(0);
+            $table->integer('especialidade')->default(0);
             $table->string('email', 50)->unique();
-            $table->string('cpf', 11)->unique();
+            $table->string('instituicao');
             $table->integer('perfil_usuario');
-            $table->dateTime('data_criacao')->nullable();
             $table->integer('status')->default(0);
+            $table->timestamps();
 
             $table->foreign('perfil_usuario')->references('id')->on('perfil');
+            $table->foreign('especialidade')->references('id')->on('medicos_funcao');
 
             $table->engine = 'InnoDB';
         });
 
         DB::table('usuarios')->insert([
             [
-                'nome' => 'Admin',
-                'sobrenome' => 'Admin',
                 'nome_completo' => 'Admin Admin',
                 'email' => 'admin@admin.com',
-                'cpf' => '11111111111',
                 'perfil_usuario' => 1,
                 'status' => 1,
+                'instituicao' => "Hospital Geral"
             ],
             [
-                'nome' => 'Medico',
-                'sobrenome' => 'Medico',
                 'nome_completo' => 'Medico Medico',
                 'email' => 'medico@medico.com',
-                'cpf' => '22222222222',
                 'perfil_usuario' => 2,
                 'status' => 1,
+                'instituicao' => "Hospital Geral"
             ],
             [
-                'nome' => 'Secretaria',
-                'sobrenome' => 'Secretaria',
                 'nome_completo' => 'Secretaria Secretaria',
                 'email' => 'secretaria@secretaria.com',
-                'cpf' => '33333333333',
                 'perfil_usuario' => 3,
                 'status' => 1,
+                'instituicao' => "Hospital Geral"
             ],
         ]);
     }

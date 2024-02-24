@@ -20,4 +20,13 @@ class TelefoneController extends Controller
 
         return $telefone;
     }
+
+    public function createPhone($user_id, $telefone, $tipo){
+        $phone = "55" . preg_replace("/[^0-9]/", '', $telefone);
+        $telefone = new Telefone();
+        $telefone->usuario_id = $user_id;
+        $telefone->telefone = $phone;
+        $telefone->tipo_telefone = $tipo;
+        $telefone->save();
+    }
 }

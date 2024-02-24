@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('usuario_id');
             $table->dateTime('ultimo_acesso')->nullable();
             $table->rememberToken();
-            $table->dateTime('updated_at')->nullable();
+            $table->timestamps();
 
             $table->foreign('usuario_id')->references('id')->on('usuarios');
 

@@ -25,7 +25,7 @@ class FotoPerfilController extends Controller
         $this->foto_perfil->usuario_id = $user_id;
         $this->foto_perfil->foto = $file;
 
-        $image = $this->foto_perfil->save();
+        $this->foto_perfil->save();
 
         return $this->foto_perfil;
     }

@@ -37,7 +37,7 @@ class AuthController extends Controller
 
             $idLogin = Auth::id();
 
-            $dados_usuario = $this->user_controller->getDadosUser($idLogin);
+            $dados_usuario = $this->user_controller->getDadosUser($usuario);
 
             $data = [
                 'token' => $token,

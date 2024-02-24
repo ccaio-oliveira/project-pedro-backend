@@ -25,11 +25,12 @@ Route::group(['middleware' => 'cors'], function () {
         Route::get('/usuarios', [UserController::class, 'getUsuarios']);
         Route::get('/usuarioPerfil', [UserController::class, 'getUsuarioPerfil']);
         Route::post('/usuarios/changeEmail', [UserController::class, 'changeEmail']);
+        Route::post('/users/validateCurrentPassword', [UserController::class, 'validateCurrentPassword']);
+        Route::post('/users/uploadProfile',  [UserController::class, 'uploadProfile']);
+        Route::post('/users/changePassword', [UserController::class, 'changePassword']);
+        Route::post('/users/registerDoc', [UserController::class, 'registerDoctor']);
         Route::put('/usuarios/changeNumero', [UserController::class, 'changeNumero']);
         Route::put('/usuarios/changeUsername', [UserController::class, 'changeUsername']);
-        Route::post('/users/validateCurrentPassword', [UserController::class, 'validateCurrentPassword']);
-        Route::post('/users/changePassword', [UserController::class, 'changePassword']);
-        Route::post('/users/uploadProfile',  [UserController::class, 'uploadProfile']);
         Route::put('/users/nickname', [UserController::class, 'changeNickname']);
 
         Route::get('/relatorios', [RelatorioController::class, 'getRelatorios']);
