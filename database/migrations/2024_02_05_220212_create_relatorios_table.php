@@ -21,7 +21,7 @@ return new class extends Migration
             $table->integer('grau');
             $table->integer('status');
             $table->integer('arquivo')->nullable();
-            $table->dateTime('data_criacao');
+            $table->timestamps();
 
             $table->foreign('aberto_por')->references('id')->on('usuarios');
             $table->foreign('atrelado_a')->references('id')->on('usuarios');
