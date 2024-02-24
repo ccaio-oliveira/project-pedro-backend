@@ -289,4 +289,36 @@ class UserController extends Controller
 
         return response()->json(['message' => 'Dados de administrador registrados com sucesso!', 'status' => 200]);
     }
+
+    public function registerSec(Request $request){
+        $full_name = $request->input('fullName');
+        $email = $request->input('email');
+        $password = $request->input('password');
+        $whatsapp_number = $request->input('whatsappNumber');
+        $phone_number = $request->input('phoneNumber');
+        $doctor_id = $request->input('doctorId');
+
+        $hashPassword = Hash::make($password);
+
+        $this->user->nome_completo = $full_name;
+        $this->user->email = $email;
+        $this->user->perfil_usuario = 3;
+        $this->user->status = 1;
+        $this->user->save();
+
+        $this->secretaria_controller->createSecretary($this->user->id, $doctor_id);
+
+        $this->user_login->email = $email;
+        $this->user_login->password = $hashPassword;
+        $this->user_login->usuario_id = $this->user->id;
+        $this->user_login->save();
+
+        $this->telefone_controller->createPhone($this->user->id, $whatsapp_number, 'whatsapp');
+        $this->telefone_controller->createPhone($this->user->id, $phone_number, 'celular');
+
+        $mailer = new EmailUserCreated($full_name, $email, $password);
+        Mail::to($email)->send($mailer);
+
+        return response()->json(['message' => 'Dados de secretário(a) registrados com sucesso!', 'status' => 200]);
+    }
 }

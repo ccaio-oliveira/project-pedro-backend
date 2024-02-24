@@ -30,6 +30,7 @@ Route::group(['middleware' => 'cors'], function () {
         Route::post('/users/changePassword', [UserController::class, 'changePassword']);
         Route::post('/users/registerDoc', [UserController::class, 'registerDoctor']);
         Route::post('/users/registerAdmin', [UserController::class, 'registerAdmin']);
+        Route::post('/users/registerSec', [UserController::class, 'registerSec']);
 
         Route::put('/usuarios/changeNumero', [UserController::class, 'changeNumero']);
         Route::put('/usuarios/changeUsername', [UserController::class, 'changeUsername']);

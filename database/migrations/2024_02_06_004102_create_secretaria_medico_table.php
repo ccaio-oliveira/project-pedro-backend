@@ -16,6 +16,7 @@ return new class extends Migration
             $table->integer('id', true);
             $table->integer('secretaria_id');
             $table->integer('medico_id');
+            $table->timestamps();
 
             $table->foreign('secretaria_id')->references('id')->on('usuarios');
             $table->foreign('medico_id')->references('id')->on('usuarios');
