@@ -77,9 +77,9 @@ class RelatorioController extends Controller
             $relatorio->data_criacao = date('H:i - d/m/Y', strtotime($relatorio->data_criacao));
 
             $relatorio->aberto_por = $this->usuario->getUserById($relatorio->aberto_por);
-            $relatorio->aberto_por = $relatorio->aberto_por->nome . ' ' . $relatorio->aberto_por->sobrenome;
+            $relatorio->aberto_por = $relatorio->aberto_por->nome_completo;
             $relatorio->atrelado_a = $this->usuario->getUserById($relatorio->atrelado_a);
-            $relatorio->atrelado_a = $relatorio->atrelado_a->nome . ' ' . $relatorio->atrelado_a->sobrenome;
+            $relatorio->atrelado_a = $relatorio->atrelado_a->nome_completo;
 
             $relatorio->status = $this->status_relatorio_controller->getStatusRelatorio($relatorio->status)->nome;
 
