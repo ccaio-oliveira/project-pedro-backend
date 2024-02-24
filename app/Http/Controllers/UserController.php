@@ -55,6 +55,19 @@ class UserController extends Controller
         return response()->json($dados_usuarios);
     }
 
+    public function getDoctors(){
+        $dados_medicos = $this->user::where('perfil_usuario', '=', 2);
+
+        $dados_medicos = $dados_medicos->get();
+
+        foreach($dados_medicos as $medico){
+            $medico->crm = $this->medico_crm_controller->getMedicoCRM($medico->id)->crm;
+            $medico->especialidade = $this->medico_funcao_controller->getMedicoFuncao($medico->especialidade)->funcao;
+        }
+
+        return response()->json($dados_medicos);
+    }
+
     public function getUsuariosPorId($id){
         $dados_usuarios = $this->user::all()->where('id', '=', $id)->first();
 

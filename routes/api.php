@@ -24,6 +24,7 @@ Route::group(['middleware' => 'cors'], function () {
 
         Route::get('/usuarios', [UserController::class, 'getUsuarios']);
         Route::get('/usuarioPerfil', [UserController::class, 'getUsuarioPerfil']);
+        Route::get('/users/doctors', [UserController::class, 'getDoctors']);
         Route::post('/usuarios/changeEmail', [UserController::class, 'changeEmail']);
         Route::post('/users/validateCurrentPassword', [UserController::class, 'validateCurrentPassword']);
         Route::post('/users/uploadProfile',  [UserController::class, 'uploadProfile']);
