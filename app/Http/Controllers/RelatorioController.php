@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\File;
 use App\Models\Grau;
 use App\Models\Relatorios;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -74,7 +75,7 @@ class RelatorioController extends Controller
             $relatorio->telefone_whats = $this->usuario->getUserTelefone($relatorio->atrelado_a, 'whatsapp');
             $relatorio->telefone_cel = $this->usuario->getUserTelefone($relatorio->atrelado_a, 'celular');
 
-            $relatorio->data_criacao = date('H:i - d/m/Y', strtotime($relatorio->data_criacao));
+            $relatorio->data_criacao = Carbon::parse($relatorio->created_at)->format('H:i - d/m/Y');
 
             $relatorio->aberto_por = $this->usuario->getUserById($relatorio->aberto_por);
             $relatorio->aberto_por = $relatorio->aberto_por->nome_completo;
@@ -157,7 +158,7 @@ class RelatorioController extends Controller
             $relatorio->telefone_whats = $this->usuario->getUserTelefone($relatorio->atrelado_a, 'whatsapp');
             $relatorio->telefone_cel = $this->usuario->getUserTelefone($relatorio->atrelado_a, 'celular');
 
-            $relatorio->data_criacao = date('H:i - d/m/Y', strtotime($relatorio->data_criacao));
+            $relatorio->data_criacao = Carbon::parse($relatorio->created_at)->format('H:i - d/m/Y');
 
             $relatorio->aberto_por = $this->usuario->getDadosUser($relatorio->aberto_por);
             $relatorio->aberto_por = $relatorio->aberto_por->nome . ' ' . $relatorio->aberto_por->sobrenome;
@@ -194,7 +195,6 @@ class RelatorioController extends Controller
         $this->relatorio->grau = $request->input('grau');
         $this->relatorio->assunto = $request->input('assunto');
         $this->relatorio->status = 1;
-        $this->relatorio->data_criacao = date('Y-m-d H:i:s');
         $this->relatorio->arquivo = $file;
 
         $createRelatorio = $this->relatorio->save();
