@@ -10,6 +10,4 @@ class Relatorios extends Model
     use HasFactory;
 
     protected $table = 'relatorios';
-
-    public $timestamps = false;
 }

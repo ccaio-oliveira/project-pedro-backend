@@ -49,6 +49,12 @@ class UserController extends Controller
         return $dados_usuario;
     }
 
+    public function getUserById($id){
+        $user = $this->user::all()->where('id', '=', $id)->first();
+
+        return $user;
+    }
+
     public function getUsuarios(){
         $dados_usuarios = $this->user::all();
 
@@ -66,12 +72,6 @@ class UserController extends Controller
         }
 
         return response()->json($dados_medicos);
-    }
-
-    public function getUsuariosPorId($id){
-        $dados_usuarios = $this->user::all()->where('id', '=', $id)->first();
-
-        return $dados_usuarios;
     }
 
     public function getUsersByType(Request $request){
