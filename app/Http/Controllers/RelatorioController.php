@@ -75,6 +75,7 @@ class RelatorioController extends Controller
             $relatorio->telefone_whats = $this->usuario->getUserTelefone($relatorio->atrelado_a, 'whatsapp');
             $relatorio->telefone_cel = $this->usuario->getUserTelefone($relatorio->atrelado_a, 'celular');
 
+            $relatorio->data_nascimento_paciente = Carbon::parse($relatorio->data_nascimento_paciente)->format('d/m/Y');
             $relatorio->data_criacao = Carbon::parse($relatorio->created_at)->format('H:i - d/m/Y');
 
             $relatorio->aberto_por = $this->usuario->getUserById($relatorio->aberto_por);
@@ -158,6 +159,7 @@ class RelatorioController extends Controller
             $relatorio->telefone_whats = $this->usuario->getUserTelefone($relatorio->atrelado_a, 'whatsapp');
             $relatorio->telefone_cel = $this->usuario->getUserTelefone($relatorio->atrelado_a, 'celular');
 
+            $relatorio->data_nascimento_paciente = Carbon::parse($relatorio->data_nascimento_paciente)->format('d/m/Y');
             $relatorio->data_criacao = Carbon::parse($relatorio->created_at)->format('H:i - d/m/Y');
 
             $relatorio->aberto_por = $this->usuario->getUserById($relatorio->aberto_por);
