@@ -25,7 +25,6 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('perfil_usuario')->references('id')->on('perfil');
-            $table->foreign('especialidade')->references('id')->on('medicos_funcao');
 
             $table->engine = 'InnoDB';
         });
