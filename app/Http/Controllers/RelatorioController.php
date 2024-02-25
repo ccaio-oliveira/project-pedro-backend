@@ -160,9 +160,9 @@ class RelatorioController extends Controller
 
             $relatorio->data_criacao = Carbon::parse($relatorio->created_at)->format('H:i - d/m/Y');
 
-            $relatorio->aberto_por = $this->usuario->getDadosUser($relatorio->aberto_por);
+            $relatorio->aberto_por = $this->usuario->getUserById($relatorio->aberto_por);
             $relatorio->aberto_por = $relatorio->aberto_por->nome . ' ' . $relatorio->aberto_por->sobrenome;
-            $relatorio->atrelado_a = $this->usuario->getDadosUser($relatorio->atrelado_a);
+            $relatorio->atrelado_a = $this->usuario->getUserById($relatorio->atrelado_a);
             $relatorio->atrelado_a = $relatorio->atrelado_a->nome . ' ' . $relatorio->atrelado_a->sobrenome;
 
             $relatorio->status = $this->status_relatorio_controller->getStatusRelatorio($relatorio->status)->nome;
