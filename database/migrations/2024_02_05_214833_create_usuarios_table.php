@@ -35,6 +35,7 @@ return new class extends Migration
                 'nome_completo' => 'Admin Admin',
                 'email' => 'admin@admin.com',
                 'perfil_usuario' => 1,
+                'especialidade' => 0,
                 'status' => 1,
                 'instituicao' => "Hospital Geral"
             ],
@@ -43,12 +44,14 @@ return new class extends Migration
                 'email' => 'medico@medico.com',
                 'perfil_usuario' => 2,
                 'status' => 1,
+                'especialidade' => 10,
                 'instituicao' => "Hospital Geral"
             ],
             [
                 'nome_completo' => 'Secretaria Secretaria',
                 'email' => 'secretaria@secretaria.com',
                 'perfil_usuario' => 3,
+                'especialidade' => 0,
                 'status' => 1,
                 'instituicao' => "Hospital Geral"
             ],
