@@ -76,11 +76,11 @@ class FileController extends Controller
         $relatorios = $this->relatorios::where('grau', $grau);
 
         if($dataInicio != null && $dataFim != null){
-            $relatorios->whereBetween('data_criacao', [$dataInicio, $dataFim]);
+            $relatorios->whereBetween('created_at', [$dataInicio, $dataFim]);
         }else if($dataInicio != null){
-            $relatorios->where('data_criacao', '>=', $dataInicio);
+            $relatorios->where('created_at', '>=', $dataInicio);
         }else if($dataFim != null){
-            $relatorios->where('data_criacao', '<=', $dataFim);
+            $relatorios->where('created_at', '<=', $dataFim);
         }
 
         if($status != 0){
