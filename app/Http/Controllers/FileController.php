@@ -104,8 +104,8 @@ class FileController extends Controller
         $row = 2;
 
         foreach($relatorios as $relatorio){
-            $atrelado_a = $this->usuarios->getDadosUser($relatorio->atrelado_a);
-            $aberto_por = $this->usuarios->getDadosUser($relatorio->aberto_por);
+            $atrelado_a = $this->usuarios->getUserById($relatorio->atrelado_a);
+            $aberto_por = $this->usuarios->getUserById($relatorio->aberto_por);
 
             $sheet->setCellValue('A' . $row, $relatorio->id);
             $sheet->setCellValue('B' . $row, $relatorio->assunto);
