@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('relatorios_arquivos', function (Blueprint $table) {
             $table->integer('id', true);
             $table->string('nome');
-            $table->binary('arquivo');
+            $table->string('arquivo');
             $table->timestamps();
 
             $table->engine = 'InnoDB';

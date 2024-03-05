@@ -38,14 +38,14 @@ class FileController extends Controller
     public function insertFileController($file){
 
         $fileName = $file->getClientOriginalName();
-        $fileContent = file_get_contents($file->getRealPath());
 
-        $newFile = $this->file::create([
-            'nome' => $fileName,
-            'arquivo' => $fileContent
-        ]);
+        $path = $file->store('uploads', 'public');
 
-        return $newFile->id;
+        $this->file->nome = $fileName;
+        $this->file->arquivo = $path;
+        $this->file->save();
+
+        return $this->file->id;
     }
 
     public function getFileDownload($id){
@@ -57,14 +57,9 @@ class FileController extends Controller
             ], 404);
         }
 
-        $response = new StreamedResponse(function() use ($file) {
-            echo $file->arquivo;
-        });
+        $path = storage_path('app/public/' . $file->arquivo);
 
-        $response->headers->set('Content-Type', 'application/octet-stream');
-        $response->headers->set('Content-Disposition', 'attachment; filename="' . $file->nome . '"');
-
-        return $response;
+        return response()->download($path, $file->nome);
     }
 
     public function exportarRelatorios(Request $request){
