@@ -23,6 +23,7 @@ Route::group(['middleware' => 'cors'], function () {
         Route::get('/validaSessao', [AuthController::class, 'isLogged']);
 
         Route::get('/usuarios', [UserController::class, 'getUsuarios']);
+        Route::get('/allUsers', [UserController::class, 'getAllUsers']);
         Route::get('/usuarioPerfil', [UserController::class, 'getUsuarioPerfil']);
         Route::get('/users/doctors', [UserController::class, 'getDoctors']);
         Route::post('/usuarios/changeEmail', [UserController::class, 'changeEmail']);

@@ -61,6 +61,22 @@ class UserController extends Controller
         return response()->json($dados_usuarios);
     }
 
+    public function getAllUsers(){
+        $users_data = $this->user::all();
+
+        foreach($users_data as $user){
+            if($user->perfil_usuario == 2){
+                $user->crm = $this->medico_crm_controller->getMedicoCRM($user->id)->crm;
+                $user->especialidade = $this->medico_funcao_controller->getMedicoFuncao($user->especialidade)->funcao;
+            }
+
+            $user->telefone_whats = $this->getUserTelefone($user->id, 'whatsapp')->telefone;
+            $user->telefone_cel = $this->getUserTelefone($user->id, 'celular')->telefone;
+        }
+
+        return response()->json($users_data);
+    }
+
     public function getDoctors(){
         $dados_medicos = $this->user::where('perfil_usuario', '=', 2);
 
