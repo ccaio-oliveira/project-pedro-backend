@@ -58,15 +58,15 @@ class RelatorioController extends Controller
         }
 
         if($dataInicial != null && $dataFinal == null){
-            $relatorios = $relatorios->where('data_criacao', '>=', $dataInicial);
+            $relatorios = $relatorios->where('created_at', '>=', $dataInicial);
         }
 
         if($dataFinal != null && $dataInicial == null){
-            $relatorios = $relatorios->where('data_criacao', '<=', $dataFinal);
+            $relatorios = $relatorios->where('created_at', '<=', $dataFinal);
         }
 
         if($dataInicial != null && $dataFinal != null){
-            $relatorios = $relatorios->whereBetween('data_criacao', [$dataInicial, $dataFinal]);
+            $relatorios = $relatorios->whereBetween('created_at', [$dataInicial, $dataFinal]);
         }
 
         $relatorios = $relatorios->get();
@@ -113,15 +113,15 @@ class RelatorioController extends Controller
             $relatorios = $this->relatorio;
 
             if($dataInicial != null && $dataFinal == null){
-                $relatorios = $relatorios->where('data_criacao', '>=', $dataInicial);
+                $relatorios = $relatorios->where('created_at', '>=', $dataInicial);
             }
 
             if($dataFinal != null && $dataInicial == null){
-                $relatorios = $relatorios->where('data_criacao', '<=', $dataFinal);
+                $relatorios = $relatorios->where('created_at', '<=', $dataFinal);
             }
 
             if($dataInicial != null && $dataFinal != null){
-                $relatorios = $relatorios->whereBetween('data_criacao', [$dataInicial, $dataFinal]);
+                $relatorios = $relatorios->whereBetween('created_at', [$dataInicial, $dataFinal]);
             }
 
             $relatorios = $relatorios->orderBy('status', 'asc');
@@ -141,15 +141,15 @@ class RelatorioController extends Controller
             });
 
             if($dataInicial != null && $dataFinal == null){
-                $relatorios = $relatorios->where('data_criacao', '>=', $dataInicial);
+                $relatorios = $relatorios->where('created_at', '>=', $dataInicial);
             }
 
             if($dataFinal != null && $dataInicial == null){
-                $relatorios = $relatorios->where('data_criacao', '<=', $dataFinal);
+                $relatorios = $relatorios->where('created_at', '<=', $dataFinal);
             }
 
             if($dataInicial != null && $dataFinal != null){
-                $relatorios = $relatorios->whereBetween('data_criacao', [$dataInicial, $dataFinal]);
+                $relatorios = $relatorios->whereBetween('created_at', [$dataInicial, $dataFinal]);
             }
         }
 
