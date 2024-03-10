@@ -94,7 +94,9 @@ class FileController extends Controller
         $sheet->setCellValue('E1', 'Grau de Urgência');
         $sheet->setCellValue('F1', 'Aberto por');
         $sheet->setCellValue('G1', 'Enviado para');
-        $sheet->setCellValue('H1', 'Status');
+        $sheet->setCellValue('H1', 'Data de abertura');
+        $sheet->setCellValue('I1', 'Status');
+        $sheet->setCellValue('J1', 'Data de visualização');
 
         $row = 2;
 
@@ -109,7 +111,9 @@ class FileController extends Controller
             $sheet->setCellValue('E' . $row, $grau == 1 ? 'Prioritário' : ($grau == 2 ? 'Não Urgente' : 'Rotina'));
             $sheet->setCellValue('F' . $row, $aberto_por->nome_completo);
             $sheet->setCellValue('G' . $row, $atrelado_a->nome_completo);
-            $sheet->setCellValue('H' . $row, $relatorio->status == 1 ? 'Pendente' : 'Visualizado');
+            $sheet->setCellValue('H' . $row, date('d/m/Y H:i:s', strtotime($relatorio->created_at)));
+            $sheet->setCellValue('I' . $row, $relatorio->status == 1 ? 'Pendente' : 'Visualizado');
+            $sheet->setCellValue('J' . $row, $relatorio->status == 1 ? 'Não visualizado' : date('d/m/Y H:i:s', strtotime($relatorio->updated_at)));
 
             $row++;
         }
